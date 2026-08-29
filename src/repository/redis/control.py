@@ -165,6 +165,12 @@ class RedisControl:
 
                            client.delete(name)
 
+
+                      break
+
+
+                    
+
             
 
 
