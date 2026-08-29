@@ -19,3 +19,22 @@ engine = ConnectDb(url=envroins["url"]).run()
 #Junta a classe de conexão com redis com suas variaveis
 from src.infra.connect.redis import RedisConnect
 client = RedisConnect(port=envroins["redis_port"], host=envroins["redis_host"]).run()
+
+
+
+
+
+if __name__ == "__main__":
+
+    import sys
+
+
+    #Executa migration do redis
+    if sys.argv[1] == "migration_redis":
+
+        from src.infra.migration.redis import MigrationRedis
+
+        instance = MigrationRedis(engine=engine, redis_connection=client)
+        instance.run()
+
+    
