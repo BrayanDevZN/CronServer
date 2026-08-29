@@ -37,4 +37,18 @@ if __name__ == "__main__":
         instance = MigrationRedis(engine=engine, redis_connection=client)
         instance.run()
 
+
+    #Executa a migração do banco de dados
+    elif sys.argv[1] == "migration_db":
+
+        from src.infra.migration.db import MigrationDb
+
+        instance = MigrationDb(engine=engine)
+
+        instance.run()
+
+    else:
+
+        raise ValueError(f"Not expeted argument {sys.argv[1]}")
+
     

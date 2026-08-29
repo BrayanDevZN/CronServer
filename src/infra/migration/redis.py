@@ -40,8 +40,8 @@ class MigrationRedis:
                     )
                 )
 
-            self.result = result.mappings().fetchall()
-
+            self.result = result.mappings().fetchall()[0]
+           
         except Exception as e:
 
             logger.error(e)
@@ -50,7 +50,7 @@ class MigrationRedis:
     #Confere se existe dados 
     def _exists(self) -> None:
 
-        if self.result is None:
+        if not self.result:
 
             logger.info("Ainda não ha dados salvos!!")
             self.exists = False
