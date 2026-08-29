@@ -15,3 +15,7 @@ from src.infra.connect.db import ConnectDb
 engine = ConnectDb(url=envroins["url"]).run()
 
 
+
+#Junta a classe de conexão com redis com suas variaveis
+from src.infra.connect.redis import RedisConnect
+client = RedisConnect(port=envroins["redis_port"], host=envroins["redis_host"]).run()
