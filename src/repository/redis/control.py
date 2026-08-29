@@ -165,6 +165,8 @@ class RedisControl:
 
                            client.delete(name)
 
+                      client.execute()
+
 
                       break
 
