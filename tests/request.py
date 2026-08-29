@@ -9,7 +9,7 @@ from unittest.mock import Mock, patch
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.infra.requests.request import HttpRequest, HttpRequestError
+from src.service.module import HttpRequest
 
 
 class TestHttpRequest(unittest.TestCase):

@@ -1,7 +1,8 @@
 """
 Junta os modulos de infra e facilita a importação
 """
-
+#Importa requests
+from src.infra.requests.request import HttpRequest
 
 
 #Pega as variaveis de ambiente
