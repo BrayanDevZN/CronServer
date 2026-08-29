@@ -161,6 +161,10 @@ class RedisControl:
                       if user is not None:
                            client.zrem(name, user)
 
+                      else:
+
+                           client.delete(name)
+
             
 
 
