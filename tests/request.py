@@ -9,12 +9,12 @@ from unittest.mock import Mock, patch
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.infra.request import HttpRequest, HttpRequestError
+from src.infra.requests.request import HttpRequest, HttpRequestError
 
 
 class TestHttpRequest(unittest.TestCase):
 
-    @patch("src.infra.request.requests.request")
+    @patch("src.infra.requests.request.requests.request")
     def test_run_executes_request_with_all_parameters(self, request_mock: Mock) -> None:
         response = Mock(status_code=201)
         request_mock.return_value = response
@@ -34,7 +34,7 @@ class TestHttpRequest(unittest.TestCase):
         )
         self.assertIs(result, response)
 
-    @patch("src.infra.request.requests.request")
+    @patch("src.infra.requests.request.requests.request")
     def test_run_rejects_invalid_method(self, request_mock: Mock) -> None:
         with self.assertRaises(HttpRequestError):
             HttpRequest(

@@ -1,1 +1,1 @@
-from src.infra.request import HttpRequest
+from src.infra.requests.request import HttpRequest
