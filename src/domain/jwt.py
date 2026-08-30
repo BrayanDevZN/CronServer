@@ -17,7 +17,7 @@ class JwtAuth:
     def __init__(self, sing:str)-> None:
 
         self.sing = sing
-        self.alg = "SH256"
+        self.alg = "HS256"
 
 
     #Cria o token
