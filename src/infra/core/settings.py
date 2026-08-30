@@ -13,7 +13,7 @@ class ConfigEnviroin:
 
     def __init__(self)-> None:
 
-        self.envs = ["url", "redis_port", "redis_host"]
+        self.envs = ["url", "redis_port", "redis_host", "sing"]
         self.BASE_DIR = Path(__file__).resolve().parent
 
 
