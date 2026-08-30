@@ -28,19 +28,28 @@ class TasksDb:
 
             with self.eng.begin() as session:
 
-                tasks = session.execute(
-                    text(
-                        "insert into tasks(instance_id, cron_id, result) "
-                        "values(:instance_id, :cron_id, :result) returning *"
-                    ),
+                task = session.execute(
+                    text("""
+                        WITH inserted_task AS (
+                            INSERT INTO tasks(instance_id, cron_id, result)
+                            VALUES(:instance_id, :cron_id, :result)
+                            RETURNING *
+                        )
+                        SELECT r.*, c.*, t.*
+                        FROM inserted_task t
+                        INNER JOIN requests r ON r.id = t.instance_id
+                        INNER JOIN cron c
+                            ON c.id = t.cron_id
+                            AND c.instance_id = t.instance_id
+                    """),
                     {
                         "instance_id": instance_id,
                         "cron_id": cron_id,
                         "result": result,
                     },
-                ).mappings().fetchall()
+                ).mappings().fetchone()
 
-            return tasks[0] if tasks else None
+            return task
 
         except Exception as e:
 
@@ -56,7 +65,7 @@ class TasksDb:
 
             with self.eng.begin() as session:
 
-                tasks = session.execute(
+                task = session.execute(
                     text(
                         "select r.*, c.*, t.* from requests r "
                         "inner join cron c on r.id = c.instance_id "
@@ -65,9 +74,9 @@ class TasksDb:
                         "order by t.created_at desc"
                     ),
                     {"instance_id": instance_id},
-                ).mappings().fetchall()
+                ).mappings().fetchone()
 
-            return tasks[0] if tasks else None
+            return task
 
         except Exception as e:
 
@@ -83,15 +92,15 @@ class TasksDb:
 
             with self.eng.begin() as session:
 
-                tasks = session.execute(
+                task = session.execute(
                     text(
                         "update tasks set result = :result "
                         "where instance_id = :instance_id returning *"
                     ),
                     {"result": result, "instance_id": instance_id},
-                ).mappings().fetchall()
+                ).mappings().fetchone()
 
-            return tasks[0] if tasks else None
+            return task
 
         except Exception as e:
 

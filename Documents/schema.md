@@ -47,8 +47,8 @@ Armazena a configuração da requisição HTTP cadastrada pelo usuário.
 | `id` | `BIGINT` | Chave primária | Identificador interno da requisição. |
 | `public_id` | `UUID` | Único | Identificador público usado para consultar a requisição. |
 | `url` | `TEXT` | — | URL de destino. |
-| `headers` | `JSONB` | — | Cabeçalhos enviados na requisição. |
-| `body` | `JSONB` | — | Corpo da requisição. |
+| `headers` | `JSONB` | Obrigatório | Cabeçalhos enviados na requisição. |
+| `body` | `JSONB` | Obrigatório | Corpo da requisição. |
 | `method` | `TEXT` | — | Método HTTP utilizado. |
 | `created_at` | `TIMESTAMPTZ` | — | Data e hora de criação do registro. |
 

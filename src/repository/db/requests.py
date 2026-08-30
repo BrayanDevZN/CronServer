@@ -34,18 +34,18 @@ class RequestsDb:
             with self.eng.begin() as session:
 
                 result = session.execute(
-                    text("insert into requests(url, method, headers, body, interval) " \
+                    text("insert into requests(url, method, headers, body) " \
                     "values(:url, :method, :headers, :body) returning *"),
                     {"url": url, "method": method, "headers": headers, "body":body}
-                ).mappings().fetchone()[0]
+                ).mappings().fetchone()
 
 
                 result_cron = session.execute(
                     text("insert into cron(instance_id, interval) values(:instance_id, :interval) returning *"),
                     {"instance_id": result["id"], "interval": interval}
-                ).mappings().fetchone()[0]
+                ).mappings().fetchone()
 
-                result = result | result_cron
+                result = dict(result) | dict(result_cron)
 
                 
             return result

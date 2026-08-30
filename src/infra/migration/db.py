@@ -42,8 +42,8 @@ class MigrationDb:
                     id BIGSERIAL PRIMARY KEY,
                     public_id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
                     url TEXT NOT NULL,
-                    headers JSONB,
-                    body JSONB,
+                    headers JSONB NOT NULL,
+                    body JSONB NOT NULL,
                     method TEXT NOT NULL,
                     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
                 );
@@ -97,30 +97,12 @@ class MigrationDb:
             logger.error(e)
             raise MigrationDbError(e)
 
-    #Adiciona o UUID automático caso a tabela requests já exista
-    def _uuid_default(self) -> None:
-
-        try:
-
-            logger.info("Configurando UUID automático na tabela requests...")
-
-            with self.eng.begin() as session:
-
-                session.execute(text("""
-                    ALTER TABLE requests
-                    ALTER COLUMN public_id SET DEFAULT uuid_generate_v4();
-                """))
-
-        except Exception as e:
-
-            logger.error(e)
-            raise MigrationDbError(e)
-
+    
+  
     #executa todos os metodos
     def run(self) -> None:
-
-        self._uuid_extension()
         self._sql()
         self._query()
-        self._uuid_default()
+        self._uuid_extension()
         
+       
