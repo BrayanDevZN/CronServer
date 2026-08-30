@@ -40,7 +40,7 @@ class MigrationRedis:
                     )
                 )
 
-            self.result = result.mappings().fetchall()[0]
+            self.result = result.mappings().fetchone()
            
         except Exception as e:
 
@@ -89,4 +89,3 @@ class MigrationRedis:
 
         
         
-

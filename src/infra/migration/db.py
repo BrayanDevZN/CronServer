@@ -17,6 +17,22 @@ class MigrationDb:
 
         self.eng = engine
 
+    #Cria a extensão usada para gerar UUID automaticamente
+    def _uuid_extension(self) -> None:
+
+        try:
+
+            logger.info("Criando extensão uuid-ossp se não existir...")
+
+            with self.eng.begin() as session:
+
+                session.execute(text('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";'))
+
+        except Exception as e:
+
+            logger.error(e)
+            raise MigrationDbError(e)
+
     #comandos sqls de cada tabela
     def _sql(self) -> None:
 
@@ -24,10 +40,10 @@ class MigrationDb:
             "requests": text("""
                 CREATE TABLE IF NOT EXISTS requests (
                     id BIGSERIAL PRIMARY KEY,
-                    public_id UUID NOT NULL UNIQUE,
+                    public_id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
                     url TEXT NOT NULL,
-                    headers JSONB,
-                    body JSONB,
+                    headers JSONB NOT NULL,
+                    body JSONB NOT NULL,
                     method TEXT NOT NULL,
                     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
                 );
@@ -81,9 +97,12 @@ class MigrationDb:
             logger.error(e)
             raise MigrationDbError(e)
 
+    
+  
     #executa todos os metodos
     def run(self) -> None:
-
         self._sql()
         self._query()
+        self._uuid_extension()
         
+       
