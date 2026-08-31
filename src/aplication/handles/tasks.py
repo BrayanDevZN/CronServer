@@ -25,9 +25,10 @@ async def select(payload:dict = Depends(DependsIntance().exists)):
         logger.info("Executando rota requests com o metodo POST...")
 
         instance_id = payload["id"]
+        result =await control_db.tasks.select(instance_id=instance_id)
 
         return JSONResponse(
-            content={"error": None, "content": control_db.tasks.select(instance_id=instance_id)}, status_code=201
+            content={"error": None, "content": result}, status_code=201
         )
 
     except Exception as e:
