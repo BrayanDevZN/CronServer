@@ -55,7 +55,7 @@ class MIdlleware(BaseHTTPMiddleware):
             return await call_next(request)
 
 
-        if not "X-instance_token" in request.headers:
+        if not "X-instance_token" in request.headers and request.method != "POST":
 
             return JSONResponse(
                 status_code=401, content={"Error": "expeted header X-instance_token"}

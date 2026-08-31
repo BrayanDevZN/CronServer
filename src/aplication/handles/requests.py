@@ -5,10 +5,10 @@ logger = LogLayer("aplication_handles_requests").config().logger()
 Rotas de requests
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from src.service.module import control_db, jwt_auth, RequestsModel
-
+from src.aplication.dependences.depends import DependsIntance
 router_requests = APIRouter(prefix="/requests")
 
 
@@ -60,7 +60,7 @@ async def select(instance_token:str):
 
         token = jwt_auth.read(token=instance_token)
 
-        instance = control_db.requests.select(search="public_id", value=token["public_id"])
+        instance = await control_db.requests.select(search="public_id", value=token["public_id"])
 
         if instance is None:
 
@@ -84,6 +84,19 @@ async def select(instance_token:str):
 
 
 @router_requests.patch("/")
+async def update(instance: RequestsModel.RequestsModelUpdate, payload: str = Depends(DependsIntance().exists)):
+
+    try:
+
+        logger.info("Executando rota requests com o metodo PATCH...")
+
+        
+
+
+
+
+
+
         
 
 

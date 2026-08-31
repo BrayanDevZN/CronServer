@@ -4,10 +4,10 @@ Dependencias da aplicação
 
 
 from src.service.module import control_db, jwt_auth
-from fastapi import Request
-from fastapi.responses import JSONResponse
+from fastapi import Request, HTTPException
 
-class Depends:
+
+class DependsIntance:
 
     #metodo pra pegar os dados do token
     def _get_token(self) -> None:
@@ -25,12 +25,13 @@ class Depends:
 
         if instance is None:
 
-            return JSONResponse(
-                content={"error: not found instance"}, status_code=401
+            raise HTTPException(
+                status_code=401,
+                detail="not found instance"
             )
 
 
-        return self.payload if instance is not None else None
+        return self.payload 
 
 
     
