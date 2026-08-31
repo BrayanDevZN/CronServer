@@ -2,4 +2,5 @@
 Facilita a importação dos modulos
 """
 
-from src.domain.jwt import JwtAuth
+from src.domain.auth.jwt import JwtAuth
+import src.domain.schema.requests  as RequestsModel

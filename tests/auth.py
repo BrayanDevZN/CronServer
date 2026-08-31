@@ -15,7 +15,7 @@ sys.path = [
 ]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.domain.jwt import JwtAuthError
+from domain.auth.jwt import JwtAuthError
 from src.service.module import jwt_auth
 
 
