@@ -34,7 +34,7 @@ class MigrationRedis:
                 result = session.execute(
                     text(
                         """
-                            select r.id, c.interval from requests r inner join cron c on r.id = c.instance_id
+                            select r.id, c.interval, c.created_at from requests r inner join cron c on r.id = c.instance_id
                         """
 
                     )
