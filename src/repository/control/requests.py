@@ -41,15 +41,15 @@ class RequestsControl:
 
 
     #Confere se existe no cache, se exitir, retorna ele, se não, le do banco, e se o cache for none, ele salva
-    async def select(self, public_id:int|str) -> dict|None:
+    async def select(self, value:int|str, search:Literal["public_id", "url"]) -> dict|None:
 
-        cache = await self.client.get(f"request:{public_id}")
+        cache = await self.client.get(f"request:{search}")
 
         if cache is not None:
 
             return cache
 
-        result = await self.db.select(public_id=public_id)
+        result = await self.db.select(search=search, value=value)
 
         if result is None:
 
