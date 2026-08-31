@@ -90,7 +90,14 @@ async def update(instance: RequestsModel.RequestsModelUpdate, payload: str = Dep
 
         logger.info("Executando rota requests com o metodo PATCH...")
 
-        
+        public_id = payload["public_id"]
+
+
+        await control_db.requests.update(public_id=public_id, set=instance.set, value=instance.value)
+
+
+
+
 
 
 

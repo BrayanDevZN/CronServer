@@ -16,12 +16,12 @@ class DependsIntance:
 
 
     #Metodo pra verificar se o usuario existe, se não existir, retorna erro
-    def exists(self,requests:Request):
+    async def exists(self,requests:Request):
 
         self.requests = requests
         self._get_token()
 
-        instance = control_db.requests.select(public_id=self.payload["public_id"])
+        instance = await control_db.requests.select(public_id=self.payload["public_id"])
 
         if instance is None:
 
