@@ -10,3 +10,9 @@ class RequestsModelCreate(BaseModel):
     method: Literal["POST", "GET", "PATCH", "PUT", "DELETE"]
     body:dict|str
     headers:dict|str
+
+
+
+class RequestsModelUpdate(BaseModel):
+    set:Literal["method", "headers", "body", "interval"]
+    value:str
