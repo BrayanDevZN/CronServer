@@ -30,6 +30,8 @@ class DependsIntance:
                 detail="not found instance"
             )
 
+        self.payload = self.payload | instance
+
 
         return self.payload 
 

@@ -5,6 +5,7 @@ Inicializa a aplicação
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.aplication.handles.requests import router_requests
+from src.aplication.handles.tasks import router_tasks
 from src.aplication.midlleware.base import MIdlleware
 from src.infra.manage import envroins
 
@@ -12,7 +13,7 @@ class Main:
 
     def __init__(self)-> None:
 
-        self.routes= [router_requests]
+        self.routes= [router_requests, router_tasks]
         self.app = FastAPI()
 
     #Cria as configurações de cors
