@@ -21,7 +21,7 @@ class DependsIntance:
         self.requests = requests
         self._get_token()
 
-        instance = await control_db.requests.select(public_id=self.payload["public_id"])
+        instance = await control_db.requests.select(search="public_id",value=self.payload["public_id"])
 
         if instance is None:
 

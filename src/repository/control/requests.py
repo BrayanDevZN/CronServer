@@ -62,7 +62,7 @@ class RequestsControl:
         result["headers"] = json.dumps(result["headers"])
         result["body"] = json.dumps(result["body"])
 
-        await self.client.hash(name=f"request:{public_id}", data=result)
+        await self.client.hash(name=f"request:{value}", data=result)
 
         return result
 

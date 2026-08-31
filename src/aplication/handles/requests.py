@@ -33,7 +33,9 @@ async def insert(request:RequestsModel.RequestsModelCreate):
 
 
         instance = await control_db.requests.insert(url=request.url, headers=request.headers,
-                                                    body=request.body, method=request.method)
+                                                    body=request.body, method=request.method, interval=request.interval)
+
+    
 
 
         token = jwt_auth.create(payload={"public_id": instance["public_id"], "created_at": instance["created_at"]})

@@ -24,7 +24,7 @@ class MIdlleware(BaseHTTPMiddleware):
         instance = await client.get("global_rate_limit")
 
 
-        if instance > envroins["global_rate_limit"] and instance is not None:
+        if instance is not None and int(instance) > int(envroins["global_rate_limit"]) :
 
             logger.warning("Limite de requisições excedido!!!")
 
@@ -34,7 +34,7 @@ class MIdlleware(BaseHTTPMiddleware):
             )
 
 
-        client.incr("global_rate_limit")
+        await client.incr("global_rate_limit")
 
 
         if  request.method == "POST" and  request.url.path == "/requests/":
@@ -68,7 +68,7 @@ class MIdlleware(BaseHTTPMiddleware):
 
         instance = await client.get(f"token?rate_limit: {token}")
 
-        if instance is not None and instance > envroins["rate_limit"]:
+        if instance is not None and int(instance) > int(envroins["rate_limit"]):
 
             logger.warning(f"Exeded rate limit of token {token}!!!")
 
@@ -76,6 +76,8 @@ class MIdlleware(BaseHTTPMiddleware):
                 status_code=429,
                 content={"Error": f"Exeded rate limit of token {token}!!!"}
             )
+
+        await client.incr(f"token?rate_limit: {token}")
 
 
         return await call_next(request)

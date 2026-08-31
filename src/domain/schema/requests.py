@@ -10,6 +10,7 @@ class RequestsModelCreate(BaseModel):
     method: Literal["POST", "GET", "PATCH", "PUT", "DELETE"]
     body:dict|str
     headers:dict|str
+    interval:int
 
 
 
