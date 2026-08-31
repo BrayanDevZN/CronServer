@@ -96,6 +96,38 @@ async def update(instance: RequestsModel.RequestsModelUpdate, payload: str = Dep
         await control_db.requests.update(public_id=public_id, set=instance.set, value=instance.value)
 
 
+        return JSONResponse(content={"status": "sucess", "error": None}, status_code=201)
+
+    except Exception as e:
+
+        return JSONResponse(
+            content={"status": "failed", "error": e}, status_code=501
+        )
+
+
+@router_requests.delete("/")
+async def delete(payload: str = Depends(DependsIntance().exists)):
+
+    try:
+
+        logger.info("Executando rota requests com o metodo PATCH...")
+
+        await control_db.requests.delete(public_id=payload["public_id"])
+
+        return JSONResponse(content={"status": "sucess", "error": None}, status_code=201)
+
+    except Exception as e:
+
+        return JSONResponse(
+            content={"status": "failed", "error": e}, status_code=501
+        )
+
+
+
+
+
+
+
 
 
 
