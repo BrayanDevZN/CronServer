@@ -8,7 +8,7 @@ Rotas de requests
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from src.service.module import control_db, jwt_auth, RequestsModel
-from src.aplication.dependences.depends import DependsIntance
+from src.aplication.api.dependences.depends import DependsIntance
 router_requests = APIRouter(prefix="/requests", tags=["tasks"])
 
 
