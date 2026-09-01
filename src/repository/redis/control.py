@@ -150,25 +150,33 @@ class RedisControl:
          
             while True:
 
-                 logger.info(f"Deletando {name}..." if user is None else f"Deletando {user} de {name}...")
+                 try:
 
-                 with self.client.pipeline(transaction=True) as client:
+                    logger.info(f"Deletando {name}..." if user is None else f"Deletando {user} de {name}...")
 
-                      client.watch(name)
+                    with self.client.pipeline(transaction=True) as client:
 
-                      client.multi()
+                        client.watch(name)
 
-                      if user is not None:
-                           client.zrem(name, user)
+                        client.multi()
 
-                      else:
+                        if user is not None:
+                            client.zrem(name, user)
 
-                           client.delete(name)
+                        else:
 
-                      client.execute()
+                            client.delete(name)
+
+                        client.execute()
 
 
-                      break
+                        break
+
+                 except WatchError:
+                 
+                            logger.warning(f"Alguem ja estava alterando {name}, então a operação vai tentar ser executada novamente!!")
+                            continue
+
 
 
                     

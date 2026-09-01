@@ -78,7 +78,8 @@ class RequestsControl:
 
 
     #Deleta os dados e invalida cache
-    async def delete(self, public_id:str|int) -> None:
+    async def delete(self, public_id:str|int, instance_id:str|int) -> None:
 
         await self.db.delete(public_id=str(public_id))
         await self.client.delete(name=f"request:{public_id}")
+        await self.client.delete(name="schedule", user=instance_id)
