@@ -69,15 +69,23 @@ class MigrationRedis:
             session.multi()
             session.zadd(
                 name="schedule",
-                mapping=self.result
+                mapping={str(self.result["id"]): self.result["interval"]}
             )
 
             session.execute()
+
+    #Deleta o cache se existir
+    def _del(self) -> None:
+
+        logger.info("Deletando schedule se existir...")
+
+        self.redis.delete("schedule")
 
 
     #Executa todos os metodos, e so executa _save se result não for False
     def run(self) -> None:
 
+        self._del()
         self._query()
         self._exists()
         if not self.exists:

@@ -36,7 +36,7 @@ class RequestsControl:
 
         
         await self.client.hash(name=f"request:{result["public_id"]}", data=result)
-        await self.client.sorted_set(name="schedule", data={"instance_id": result["instance_id"], "interval": result["interval"]})
+        await self.client.sorted_set(name="schedule", data={str(result["instance_id"]): result["interval"]})
        
         return result
 
@@ -44,7 +44,7 @@ class RequestsControl:
     #Confere se existe no cache, se exitir, retorna ele, se não, le do banco, e se o cache for none, ele salva
     async def select(self, value:int|str, search:Literal["public_id", "url", "id"]) -> dict|None:
 
-        cache = await self.client.get(f"request:{search}")
+        cache = await self.client.get(f"request:{search}:{value}")
 
         if cache is not None:
 

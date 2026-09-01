@@ -62,5 +62,3 @@ if __name__ == "__main__":
     else:
 
         raise ValueError(f"Not expeted argument {sys.argv[1]}")
-
-    

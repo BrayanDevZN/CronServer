@@ -1,0 +1,6 @@
+FROM python:3.14.7
+
+WORKDIR /app
+COPY src/ /app/src/
+RUN pip install -r src/controller/requirements.txt
+CMD ["python", "-m", "src.aplication.main", "start_cron"]
