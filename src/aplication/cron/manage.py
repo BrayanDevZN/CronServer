@@ -25,7 +25,7 @@ async def cron_loop() -> None:
             if schedule is not None:
                 
 
-                for instance_id, interval in schedule.items():
+                for instance_id, interval in schedule:
 
 
                     instance = await control_db.requests.select(search="id", value=instance_id)
@@ -38,8 +38,7 @@ async def cron_loop() -> None:
 
                     if datetime.now(timezone.utc) >= next_run:
 
-                        task = execute_task(instance_id=instance_id)
-                        task.delay()
+                        execute_task.delay(instance)
 
             else:
 
@@ -58,5 +57,3 @@ async def cron_loop() -> None:
 
 
     
-
-

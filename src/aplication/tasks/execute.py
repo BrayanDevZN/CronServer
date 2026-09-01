@@ -10,14 +10,20 @@ Faz a requisição desejada e atualiza created at do cron
 
 from datetime import datetime, timezone
 import json
-from src.service.module import control_db, client, HttpRequest
+from src.service.module import control_db, HttpRequest
 
 
 class ExecuteTask:
 
-    def __init__(self, instance_id:int)-> None:
+    def __init__(self, instance:dict)-> None:
 
-        self.instance_id = instance_id
+        self.instance_id = int(instance["id"])
+        self.public_id = instance["public_id"]
+        self.cron_id = int(instance["cron_id"])
+        self.url = instance["url"]
+        self.method = instance["method"]
+        self.headers = instance["headers"]
+        self.body = instance["body"]
        
 
     #Executa a requisição
@@ -29,8 +35,8 @@ class ExecuteTask:
 
             try:
 
-                headers = self.result["headers"]
-                body = self.result["body"]
+                headers = self.headers
+                body = self.body
 
                 if isinstance(headers, str):
                     headers = json.loads(headers)
@@ -38,7 +44,7 @@ class ExecuteTask:
                 if isinstance(body, str):
                     body = json.loads(body)
 
-                instance = HttpRequest(url=self.result["url"], method=self.result["method"], headers=headers,
+                instance = HttpRequest(url=self.url, method=self.method, headers=headers,
                                        body=body
                                        )
 
@@ -64,7 +70,7 @@ class ExecuteTask:
 
         now = datetime.now(timezone.utc)
 
-        await control_db.requests.update(public_id=self.result["public_id"], set="created_at", value=now)
+        await control_db.requests.update(public_id=self.public_id, set="created_at", value=now)
 
 
     #Salva o resultado
@@ -72,7 +78,7 @@ class ExecuteTask:
 
         
 
-        await control_db.tasks.insert(instance_id=self.instance_id, cron_id=self.result["cron_id"], 
+        await control_db.tasks.insert(instance_id=self.instance_id, cron_id=self.cron_id,
                                       result="success" if self.request is not None else "failed")
 
 
