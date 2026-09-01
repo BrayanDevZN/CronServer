@@ -82,9 +82,3 @@ class RequestsControl:
 
         await self.db.delete(public_id=str(public_id))
         await self.client.delete(name=f"request:{public_id}")
-
-        
-
-
-
-        
