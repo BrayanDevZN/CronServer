@@ -36,6 +36,7 @@ class RequestsControl:
 
         
         await self.client.hash(name=f"request:{result["public_id"]}", data=result)
+        await self.client.sorted_set(name="schedule", data={"instance_id": result["instance_id"], "interval": result["interval"]})
        
         return result
 
