@@ -25,7 +25,7 @@ async def cron_loop() -> None:
 
             if read_log:
                 
-                logger.info("Esperando dados de  schedule...")
+                logger.info("Esperando dados de schedule...")
 
             schedule = await client.sorted_get("schedule")
             
