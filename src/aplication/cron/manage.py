@@ -39,7 +39,10 @@ async def cron_loop() -> None:
                     instance = await control_db.requests.select(search="id", value=instance_id)
 
                     if instance is None:
+                        
                         continue
+
+
 
                     date = datetime.fromisoformat(instance["created_at"])
                     next_run = date + timedelta(days=interval)
@@ -57,7 +60,7 @@ async def cron_loop() -> None:
                 read_log = False
 
 
-                await asyncio.sleep(10)
+            await asyncio.sleep(10)
 
     except Exception as e:
         logger.error(e)
