@@ -1,0 +1,60 @@
+services:
+  redis:
+    image: redis:8
+   
+  api:
+    build:
+      context: ../..
+      dockerfile: src/controller/Dockerfile.api
+
+    image: cron-api:latest
+
+    depends_on:
+      - redis
+
+    env_file:
+      - ../infra/core/.env
+
+    environment:
+      redis_host: redis
+      redis_port: "6379"
+
+    command:
+      - python
+      - -m
+      - uvicorn
+      - src.aplication.main:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+    
+  worker:
+    build: 
+      context: ../..
+      dockerfile: src/controller/Dockerfile.worker
+
+    image: cron-worker:latest
+
+    depends_on:
+      - redis
+      - api
+
+    env_file:
+      - ../infra/core/.env
+  
+  cron:
+    build: 
+      context: ../..
+      dockerfile: src/controller/Dockerfile.cron
+
+    image: cron-loop:latest
+
+    depends_on:
+      - redis
+      - api
+      - worker
+
+    env_file:
+      - ../infra/core/.env
+
