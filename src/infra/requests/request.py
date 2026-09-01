@@ -58,4 +58,4 @@ class HttpRequest:
     def run(self) -> requests.Response:
         self._validate()
         self._request()
-        return self.response
+        return self.response.json()
