@@ -9,7 +9,7 @@ Cria o loop  que vai ficar executando as tasks
 
 from src.aplication.tasks.task import execute_task
 from src.service.module import client, control_db
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone 
 import asyncio
 class CronError(Exception):
     pass
@@ -43,8 +43,11 @@ async def cron_loop() -> None:
 
                     date = datetime.fromisoformat(instance["created_at"])
                     next_run = date + timedelta(days=interval)
+                    now = datetime.now(timezone.utc)
 
-                    if datetime.now(timezone.utc) >= next_run:
+                    if now>= next_run:
+
+                        await control_db.requests.update(public_id=instance["public_id"], set="created_at", value=now)
 
                         execute_task.delay(instance)
 

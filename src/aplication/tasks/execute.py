@@ -65,14 +65,7 @@ class ExecuteTask:
                     self.request = None
                     return
 
-    #Atualiza o created_at
-    async def _update(self) -> None:
-
-        now = datetime.now(timezone.utc)
-
-        await control_db.requests.update(public_id=self.public_id, set="created_at", value=now)
-
-
+   
     #Salva o resultado
     async def _save(self) -> None:
 
@@ -85,7 +78,6 @@ class ExecuteTask:
     #Executa todos metodos
     async def run(self) -> None:
 
-        
+            
             await self._request()
-            await self._update()
             await self._save()
