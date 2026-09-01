@@ -40,7 +40,7 @@ class MigrationRedis:
                     )
                 )
 
-            self.result = result.mappings().fetchone()
+            self.result = result.mappings().fetchall()
            
         except Exception as e:
 
