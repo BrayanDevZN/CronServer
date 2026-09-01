@@ -10,7 +10,7 @@ Cria o loop  que vai ficar executando as tasks
 from src.aplication.tasks.task import execute_task
 from src.service.module import client, control_db
 from datetime import datetime, timedelta, timezone
-import time
+import asyncio
 class CronError(Exception):
     pass
 
@@ -18,11 +18,19 @@ async def cron_loop() -> None:
 
     try:
 
+        
+        read_log = True
+
         while True:
 
-            schedule = await client.sorted_get("schedule")
+            if read_log:
+                
+                logger.info("Esperando dados de  schedule...")
 
-            if schedule is not None:
+            schedule = await client.sorted_get("schedule")
+            
+
+            if schedule:
                 
 
                 for instance_id, interval in schedule:
@@ -40,10 +48,13 @@ async def cron_loop() -> None:
 
                         execute_task.delay(instance)
 
-            else:
+                    read_log = True
 
-                logger.info("Esperando dados...")
-                time.sleep(10)
+            else:
+                read_log = False
+
+
+                await asyncio.sleep(10)
 
     except Exception as e:
         logger.error(e)

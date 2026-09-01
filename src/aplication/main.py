@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
         from src.aplication.cron.manage import cron_loop
         import asyncio
-        asyncio(cron_loop())
+        asyncio.run(cron_loop())
 
     else:
 

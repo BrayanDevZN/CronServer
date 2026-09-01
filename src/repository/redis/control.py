@@ -105,8 +105,6 @@ class RedisControl:
 
          try:
 
-              logger.info(f"tentando ler {name}...")
-
 
               with self.client.pipeline() as client:
 
