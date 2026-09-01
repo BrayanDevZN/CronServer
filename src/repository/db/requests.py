@@ -61,16 +61,23 @@ class RequestsDb:
 
             logger.info("Buscando url...")
 
+            columns = (
+                "select r.id, r.public_id, r.url, r.headers, r.body, "
+                "r.method, c.id as cron_id, c.interval, c.created_at "
+                "from requests r "
+                "inner join cron c on r.id = c.instance_id "
+            )
+
             if search == "public_id":
-                sql = "select r.*, c.* from requests r inner join cron c on r.id = c.instance_id where r.public_id = :value"
+                sql = columns + "where r.public_id = :value"
 
             elif search == "url":
 
-                   sql = "select r.*, c.* from requests r inner join cron c on r.id = c.instance_id where r.url = :value"
+                sql = columns + "where r.url = :value"
 
             else:
 
-                sql = "select r.*, c.* from requests r inner join cron c on r.id = c.instance_id where r.id = :value"
+                sql = columns + "where r.id = :value"
 
 
 
