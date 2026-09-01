@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("aplication_handles_requests").config().logger()
+logger = LogLayer("aplication_handles_requests", color="magenta").config().logger()
 
 """
 Rotas de requests
@@ -144,4 +144,3 @@ async def delete(payload: str = Depends(DependsIntance().exists)):
 
 
     
-

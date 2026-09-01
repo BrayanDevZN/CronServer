@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("infra_connect_db").config().logger()
+logger = LogLayer("infra_connect_db", color="green").config().logger()
 
 
 
@@ -58,4 +58,3 @@ class ConnectDb:
         self._test()
 
         return self.eng
-

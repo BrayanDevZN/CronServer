@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("aplication_tasks_execute").config().logger()
+logger = LogLayer("aplication_tasks_execute", color="magenta").config().logger()
 
 
 

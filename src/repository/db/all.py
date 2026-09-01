@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("repository_db_all").config().logger()
+logger = LogLayer("repository_db_all", color="green").config().logger()
 
 
 

@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("domain_jwt").config().logger()
+logger = LogLayer("domain_jwt", color="blue").config().logger()
 
 
 """

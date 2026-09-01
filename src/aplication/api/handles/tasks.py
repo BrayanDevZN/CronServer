@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("aplication_handles_tasks").config().logger()
+logger = LogLayer("aplication_handles_tasks", color="magenta").config().logger()
 
 
 """
@@ -36,5 +36,4 @@ async def select(payload:dict = Depends(DependsIntance().exists)):
         return JSONResponse(
             content={"error": e, "content": None}
         )
-
 

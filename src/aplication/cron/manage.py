@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("aplication_cron").config().logger()
+logger = LogLayer("aplication_cron", color="yellow").config().logger()
 
 
 

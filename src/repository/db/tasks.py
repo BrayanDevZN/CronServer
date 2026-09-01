@@ -1,6 +1,6 @@
 from src.logs.log import LogLayer
 
-logger = LogLayer("repository_db_tasks").config().logger()
+logger = LogLayer("repository_db_tasks", color="green").config().logger()
 
 
 """

@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("infra_connect_redis").config().logger()
+logger = LogLayer("infra_connect_redis", color="red").config().logger()
 
 
 
@@ -56,5 +56,4 @@ class RedisConnect:
 
 
         
-
 

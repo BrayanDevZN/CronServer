@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("infra_connect_celery").config().logger()
+logger = LogLayer("infra_connect_celery", color="magenta").config().logger()
 
 
 
@@ -23,4 +23,3 @@ def celery_connect(backend:str, broker:str) -> Celery:
     except Exception as e:
         logger.error(e)
         
-

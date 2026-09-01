@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("repository_redis").config().logger()
+logger = LogLayer("repository_redis", color="red").config().logger()
 
 
 """

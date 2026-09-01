@@ -1,5 +1,5 @@
 from src.logs.log import LogLayer
-logger = LogLayer("infra_migration_db").config().logger()
+logger = LogLayer("infra_migration_db", color="green").config().logger()
 
 
 """
@@ -97,12 +97,8 @@ class MigrationDb:
             logger.error(e)
             raise MigrationDbError(e)
 
-    
-  
     #executa todos os metodos
     def run(self) -> None:
         self._sql()
         self._query()
         self._uuid_extension()
-        
-       
