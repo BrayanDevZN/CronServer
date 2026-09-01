@@ -82,7 +82,7 @@ class RequestsDb:
             raise RequestsDbError(e)
 
 
-    async def update(self, public_id:str|int, set:Literal["method", "headers", "body", "interval"], value:Any) -> dict:
+    async def update(self, public_id:str|int, set:Literal["method", "headers", "body", "interval", "created_at"], value:Any) -> dict:
 
 
         try:
@@ -99,6 +99,16 @@ class RequestsDb:
                         "where instance_id = (select id from requests where public_id = :public_id)" \
                         "returning *"), {"value": value,"public_id": public_id}
                     )
+
+                elif set == "created_at":
+                    result = session.execute(
+                                            text("update cron set created_at = :value " \
+                                            "where instance_id = (select id from requests where public_id = :public_id)" \
+                                            "returning *"), {"value": value,"public_id": public_id}
+                                        )
+                    
+
+
 
                 else:
 

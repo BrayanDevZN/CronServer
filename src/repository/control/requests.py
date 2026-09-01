@@ -67,7 +67,7 @@ class RequestsControl:
         return result
 
     #Atualiza os dados e invalida cache
-    async def update(self, public_id:str|int, set:Literal["method", "headers", "body", "interval"], value:Any) -> dict:
+    async def update(self, public_id:str|int, set:Literal["method", "headers", "body", "interval", "created_at"], value:Any) -> dict:
 
         result = await self.db.update(public_id=public_id, set=set, value=value)
 
