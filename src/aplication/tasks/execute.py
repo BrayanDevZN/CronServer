@@ -20,16 +20,6 @@ class ExecuteTask:
         self.instance_id = instance_id
        
 
-    #Pega os dados da instancia
-    async def _get(self) -> None:
-
-        self.result = await  control_db.requests.select(search="id", value=self.instance_id)
-
-    #Verifica se existe
-    async def _exists(self) -> None:
-
-        self.exists = self.result is not None
-
     #Executa a requisição
     async def _request(self) -> None:
 
@@ -89,11 +79,7 @@ class ExecuteTask:
     #Executa todos metodos
     async def run(self) -> None:
 
-        await self._get()
-        await self._exists()
-
-        if self.exists:
-
+        
             await self._request()
             await self._update()
             await self._save()
