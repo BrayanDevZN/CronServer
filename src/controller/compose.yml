@@ -1,6 +1,66 @@
 services:
   redis:
     image: redis:8
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  migration_db:
+    build:
+      context: ../..
+      dockerfile: src/controller/Dockerfile.api
+
+    image: cron-api:latest
+
+    depends_on:
+      redis:
+        condition: service_healthy
+
+    env_file:
+      - ../infra/core/.env
+
+    environment:
+      redis_host: redis
+      redis_port: "6379"
+
+    command:
+      - python
+      - -m
+      - src.infra.manage
+      - migration_db
+
+    restart: "no"
+
+  migration_redis:
+    build:
+      context: ../..
+      dockerfile: src/controller/Dockerfile.api
+
+    image: cron-api:latest
+
+    depends_on:
+      redis:
+        condition: service_healthy
+      migration_db:
+        condition: service_completed_successfully
+
+    env_file:
+      - ../infra/core/.env
+
+    environment:
+      redis_host: redis
+      redis_port: "6379"
+
+    command:
+      - python
+      - -m
+      - src.infra.manage
+      - migration_redis
+
+    restart: "no"
    
   api:
     build:
@@ -10,7 +70,10 @@ services:
     image: cron-api:latest
 
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
+      migration_redis:
+        condition: service_completed_successfully
 
     env_file:
       - ../infra/core/.env
@@ -18,6 +81,9 @@ services:
     environment:
       redis_host: redis
       redis_port: "6379"
+
+    ports:
+      - "8000:8000"
 
     command:
       - python
@@ -37,8 +103,10 @@ services:
     image: cron-worker:latest
 
     depends_on:
-      - redis
-      - api
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_started
 
     env_file:
       - ../infra/core/.env
@@ -51,10 +119,12 @@ services:
     image: cron-loop:latest
 
     depends_on:
-      - redis
-      - api
-      - worker
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_started
+      worker:
+        condition: service_started
 
     env_file:
       - ../infra/core/.env
-

@@ -75,6 +75,9 @@ class RequestsDb:
 
                 sql = columns + "where r.url = :value"
 
+            elif search == "id":
+                sql = columns + "where r.id = :value"
+
             else:
 
                 sql = columns + "where r.id = :value"
@@ -82,7 +85,6 @@ class RequestsDb:
 
 
         
-                   
 
             with self.eng.begin() as session:
 

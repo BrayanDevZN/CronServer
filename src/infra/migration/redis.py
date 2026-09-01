@@ -69,7 +69,7 @@ class MigrationRedis:
             session.multi()
             session.zadd(
                 name="schedule",
-                mapping=self.result
+                mapping={str(self.result["id"]): self.result["interval"]}
             )
 
             session.execute()
