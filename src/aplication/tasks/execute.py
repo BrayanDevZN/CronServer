@@ -9,6 +9,7 @@ Faz a requisição desejada e atualiza created at do cron
 """
 
 from datetime import datetime, timezone
+import json
 from src.service.module import control_db, client, HttpRequest
 
 
@@ -38,22 +39,35 @@ class ExecuteTask:
 
             try:
 
-                instance = HttpRequest(url=self.result["url"], method=self.result["method"], headers=self.result["headers"],
-                                       body=self.result["body"]
+                headers = self.result["headers"]
+                body = self.result["body"]
+
+                if isinstance(headers, str):
+                    headers = json.loads(headers)
+
+                if isinstance(body, str):
+                    body = json.loads(body)
+
+                instance = HttpRequest(url=self.result["url"], method=self.result["method"], headers=headers,
+                                       body=body
                                        )
 
 
                 self.request = instance.run()
+                return
 
-            except Exception:
+            except Exception as error:
 
-                if countdown <=3:
-                    countdown +=1
+                countdown += 1
+                logger.warning("Tentativa %s falhou: %s", countdown, error)
+
+                if countdown < 4:
                     continue
 
                 else:
 
                     self.request = None
+                    return
 
     #Atualiza o created_at
     async def _update(self) -> None:
@@ -69,7 +83,7 @@ class ExecuteTask:
         
 
         await control_db.tasks.insert(instance_id=self.instance_id, cron_id=self.result["cron_id"], 
-                                      result="sucess" if self.result is not None else "failed")
+                                      result="success" if self.request is not None else "failed")
 
 
     #Executa todos metodos
@@ -83,22 +97,3 @@ class ExecuteTask:
             await self._request()
             await self._update()
             await self._save()
-
-
-    
-
-    
-
-                
-
-
-                
-
-    
-
-
-
-    
-
-    
-    
