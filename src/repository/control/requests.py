@@ -41,7 +41,7 @@ class RequestsControl:
 
 
     #Confere se existe no cache, se exitir, retorna ele, se não, le do banco, e se o cache for none, ele salva
-    async def select(self, value:int|str, search:Literal["public_id", "url"]) -> dict|None:
+    async def select(self, value:int|str, search:Literal["public_id", "url", "id"]) -> dict|None:
 
         cache = await self.client.get(f"request:{search}")
 
@@ -67,7 +67,7 @@ class RequestsControl:
         return result
 
     #Atualiza os dados e invalida cache
-    async def update(self, public_id:str|int, set:Literal["method", "headers", "body", "interval"], value:Any) -> dict:
+    async def update(self, public_id:str|int, set:Literal["method", "headers", "body", "interval", "created_at"], value:Any) -> dict:
 
         result = await self.db.update(public_id=public_id, set=set, value=value)
 
@@ -82,9 +82,3 @@ class RequestsControl:
 
         await self.db.delete(public_id=str(public_id))
         await self.client.delete(name=f"request:{public_id}")
-
-        
-
-
-
-        

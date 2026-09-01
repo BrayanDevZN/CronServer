@@ -55,16 +55,34 @@ class RequestsDb:
             logger.error(e)
             raise RequestsDbError(e)
 
-    async def select(self, value:int|str, search:Literal["public_id", "url"]) -> dict|None:
+    async def select(self, value:int|str, search:Literal["public_id", "url", "id"]) -> dict|None:
 
         try:
 
             logger.info("Buscando url...")
 
-            sql = ("select r.*, c.* from requests r inner join cron c on r.id = c.instance_id where r.public_id = :value"
-                   if search == "public_id" else
-                   "select r.*, c.* from requests r inner join cron c on r.id = c.instance_id where r.url = :value"
-                   )
+            columns = (
+                "select r.id, r.public_id, r.url, r.headers, r.body, "
+                "r.method, c.id as cron_id, c.interval, c.created_at "
+                "from requests r "
+                "inner join cron c on r.id = c.instance_id "
+            )
+
+            if search == "public_id":
+                sql = columns + "where r.public_id = :value"
+
+            elif search == "url":
+
+                sql = columns + "where r.url = :value"
+
+            else:
+
+                sql = columns + "where r.id = :value"
+
+
+
+        
+                   
 
             with self.eng.begin() as session:
 
@@ -82,7 +100,7 @@ class RequestsDb:
             raise RequestsDbError(e)
 
 
-    async def update(self, public_id:str|int, set:Literal["method", "headers", "body", "interval"], value:Any) -> dict:
+    async def update(self, public_id:str|int, set:Literal["method", "headers", "body", "interval", "created_at"], value:Any) -> dict:
 
 
         try:
@@ -99,6 +117,16 @@ class RequestsDb:
                         "where instance_id = (select id from requests where public_id = :public_id)" \
                         "returning *"), {"value": value,"public_id": public_id}
                     )
+
+                elif set == "created_at":
+                    result = session.execute(
+                                            text("update cron set created_at = :value " \
+                                            "where instance_id = (select id from requests where public_id = :public_id)" \
+                                            "returning *"), {"value": value,"public_id": public_id}
+                                        )
+                    
+
+
 
                 else:
 

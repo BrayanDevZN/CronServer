@@ -25,6 +25,16 @@ client = RedisConnect(port=envroins["redis_port"], host=envroins["redis_host"]).
 
 
 
+#Junta modulo de celery com as variaveis de ambiente
+from src.infra.connect.celery import celery_connect
+celery_app = celery_connect(
+            backend=f"redis://{envroins["redis_host"]}:{envroins['redis_port']}/0",
+            broker=f"redis://{envroins["redis_host"]}:{envroins['redis_port']}/1"
+        )
+celery_app.autodiscover_tasks(["src.aplication.tasks.task"])
+
+        
+
 if __name__ == "__main__":
 
     import sys
@@ -47,6 +57,7 @@ if __name__ == "__main__":
         instance = MigrationDb(engine=engine)
 
         instance.run()
+
 
     else:
 
