@@ -40,7 +40,7 @@ class MigrationRedis:
                     )
                 )
 
-            self.result = result.mappings().fetchone()
+            self.result = result.mappings().fetchall()
            
         except Exception as e:
 
@@ -69,7 +69,7 @@ class MigrationRedis:
             session.multi()
             session.zadd(
                 name="schedule",
-                mapping={str(self.result["id"]): self.result["interval"]}
+                mapping={str(instance["id"]): instance["interval"] for instance in self.result} 
             )
 
             session.execute()
