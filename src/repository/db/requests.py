@@ -55,16 +55,27 @@ class RequestsDb:
             logger.error(e)
             raise RequestsDbError(e)
 
-    async def select(self, value:int|str, search:Literal["public_id", "url"]) -> dict|None:
+    async def select(self, value:int|str, search:Literal["public_id", "url", "id"]) -> dict|None:
 
         try:
 
             logger.info("Buscando url...")
 
-            sql = ("select r.*, c.* from requests r inner join cron c on r.id = c.instance_id where r.public_id = :value"
-                   if search == "public_id" else
-                   "select r.*, c.* from requests r inner join cron c on r.id = c.instance_id where r.url = :value"
-                   )
+            if search == "public_id":
+                sql = "select r.*, c.* from requests r inner join cron c on r.id = c.instance_id where r.public_id = :value"
+
+            elif search == "url":
+
+                   sql = "select r.*, c.* from requests r inner join cron c on r.id = c.instance_id where r.url = :value"
+
+            else:
+
+                sql = "select r.*, c.* from requests r inner join cron c on r.id = c.instance_id where r.id = :value"
+
+
+
+        
+                   
 
             with self.eng.begin() as session:
 

@@ -41,7 +41,7 @@ class RequestsControl:
 
 
     #Confere se existe no cache, se exitir, retorna ele, se não, le do banco, e se o cache for none, ele salva
-    async def select(self, value:int|str, search:Literal["public_id", "url"]) -> dict|None:
+    async def select(self, value:int|str, search:Literal["public_id", "url", "id"]) -> dict|None:
 
         cache = await self.client.get(f"request:{search}")
 
