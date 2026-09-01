@@ -114,7 +114,7 @@ async def delete(payload: str = Depends(DependsIntance().exists)):
 
         logger.info("Executando rota requests com o metodo PATCH...")
 
-        await control_db.requests.delete(public_id=payload["public_id"])
+        await control_db.requests.delete(public_id=payload["public_id"], instance_id=payload["id"])
 
         return JSONResponse(content={"status": "sucess", "error": None}, status_code=201)
 

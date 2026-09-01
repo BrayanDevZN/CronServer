@@ -1,5 +1,6 @@
 """Teste de integração da task executada pelo worker do Celery."""
 
+import asyncio
 import sys
 import threading
 import unittest
@@ -107,7 +108,14 @@ class TestExecuteTaskWorker(unittest.TestCase):
         self.http_thread.join(timeout=2)
 
     def test_worker_updates_cron_and_saves_result(self) -> None:
-        task_result = execute_task.delay(self.instance_id)
+        instance = asyncio.run(
+            control_db.requests.select(
+                search="id",
+                value=self.instance_id,
+            )
+        )
+
+        task_result = execute_task.delay(instance)
 
         try:
             result = task_result.get(timeout=20, propagate=True)
