@@ -128,3 +128,13 @@ services:
 
     env_file:
       - ../infra/core/.env
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      -  api
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - ./server.conf:/etc/nginx/nginx.conf:ro
