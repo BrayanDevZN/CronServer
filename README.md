@@ -1,24 +1,15 @@
+Biblioteca
+/
+README_CronServer.md
+
+
 <div align="center">
 
 # Cron Server
 
 ### Agendamento distribuído e execução assíncrona de requisições HTTP
 
-![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=for-the-badge&logo=python&logoColor=white)
-
-![FastAPI](https://img.shields.io/badge/FastAPI-0.141-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-
-![Celery](https://img.shields.io/badge/Celery-5.6-37814A?style=for-the-badge&logo=celery&logoColor=white)
-
-![Redis](https://img.shields.io/badge/Redis-8-DC382D?style=for-the-badge&logo=redis&logoColor=white)
-
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-
-![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-
-![Nginx](https://img.shields.io/badge/Nginx-Reverse%20Proxy-009639?style=for-the-badge&logo=nginx&logoColor=white)
-
-![License](https://img.shields.io/badge/Licen%C3%A7a-Uso%20com%20atribui%C3%A7%C3%A3o-6f42c1?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=for-the-badge&logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-0.141-009688?style=for-the-badge&logo=fastapi&logoColor=white) ![Celery](https://img.shields.io/badge/Celery-5.6-37814A?style=for-the-badge&logo=celery&logoColor=white) ![Redis](https://img.shields.io/badge/Redis-8-DC382D?style=for-the-badge&logo=redis&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Nginx](https://img.shields.io/badge/Nginx-Reverse%20Proxy-009639?style=for-the-badge&logo=nginx&logoColor=white) ![License](https://img.shields.io/badge/Licen%C3%A7a-Uso%20com%20atribui%C3%A7%C3%A3o-6f42c1?style=for-the-badge)
 
 ![Arquitetura visual do Cron Server](Documents/assets/cron-server-banner.png)
 
@@ -87,13 +78,11 @@ Uma integração precisa chamar diariamente um endpoint de sincronização:
 "headers": {
 
 "Authorization": "Bearer example-token"
-
 },
 
 "body": {
 
 "scope": "customers"
-
 },
 
 "interval": 1
@@ -225,7 +214,6 @@ Worker -->|salva resultado| DB
 Worker -->|atualiza cache| Redis
 
 Client -->|consulta com JWT| API
-
 ```
 
 ### Responsabilidade das camadas
@@ -299,7 +287,6 @@ Corpo:
 "headers": {
 
 "X-Origin": "cron-server"
-
 },
 
 "body": {},
@@ -329,7 +316,6 @@ curl --request POST http://localhost:8080/requests/ \
 "body": {},
 
 "interval": 1
-
 }'
 
 ```
@@ -611,7 +597,6 @@ tasks {
     timestamptz created\_at
 
 }
-
 ```
 
 ### Identificadores
@@ -638,7 +623,7 @@ O sorted set `schedule` contém um membro por instância:
 
 member = requests.id
 
-score  = cron.interval
+score = cron.interval
 
 ```
 
@@ -855,7 +840,6 @@ t.cron\_id,
 t.result,
 
 t.created\_at
-
 FROM tasks t
 
 WHERE t.instance_id = <ID_DA_INSTANCIA>
@@ -882,29 +866,29 @@ CronServer/
 
 ├── Documents/
 
-│   ├── README.md
+│ ├── README.md
 
-│   ├── assets/
+│ ├── assets/
 
-│   ├── app/
+│ ├── app/
 
-│   └── layer/
+│ └── layer/
 
 ├── src/
 
-│   ├── aplication/
+│ ├── aplication/
 
-│   ├── controller/
+│ ├── controller/
 
-│   ├── domain/
+│ ├── domain/
 
-│   ├── infra/
+│ ├── infra/
 
-│   ├── logs/
+│ ├── logs/
 
-│   ├── repository/
+│ ├── repository/
 
-│   └── service/
+│ └── service/
 
 ├── tests/
 
