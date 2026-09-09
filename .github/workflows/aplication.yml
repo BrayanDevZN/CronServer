@@ -26,7 +26,7 @@ jobs:
               with:
                 python-version: "3.14"
 
-            - run: docker compose -f src/controller/compose.yml up - d --build
+            - run: docker compose -f src/controller/compose.yml up -d --build
             - run: pip install requests 
             - run: pip install unittests
             - run: python -m tests.app

@@ -19,8 +19,6 @@ services:
       redis:
         condition: service_healthy
 
-    env_file:
-      - ../infra/core/.env
 
     environment:
       redis_host: redis
@@ -47,12 +45,6 @@ services:
       migration_db:
         condition: service_completed_successfully
 
-    env_file:
-      - ../infra/core/.env
-
-    environment:
-      redis_host: redis
-      redis_port: "6379"
 
     command:
       - python
@@ -75,12 +67,6 @@ services:
       migration_redis:
         condition: service_completed_successfully
 
-    env_file:
-      - ../infra/core/.env
-
-    environment:
-      redis_host: redis
-      redis_port: "6379"
 
     ports:
       - "8000:8000"
@@ -108,9 +94,6 @@ services:
       api:
         condition: service_started
 
-    env_file:
-      - ../infra/core/.env
-  
   cron:
     build: 
       context: ../..
@@ -126,8 +109,6 @@ services:
       worker:
         condition: service_started
 
-    env_file:
-      - ../infra/core/.env
 
   nginx:
     image: nginx:alpine
