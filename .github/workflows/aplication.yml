@@ -1,0 +1,37 @@
+name: app cron
+
+on:
+    push:
+        branches:
+            - main
+            - tasks/config
+    pull_request:
+        branches:
+            - main
+            - tasks/config
+
+jobs:
+
+    build:
+
+        environment: production
+
+        runs-on: ubuntu-latest
+
+        steps:
+
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-python@v5
+              with:
+                python-version: "3.14"
+
+            - run: docker compose -f src/controller/compose.yml up - d --build
+            - run: pip install requests 
+            - run: pip install unittests
+            - run: python -m tests.app
+
+
+
+
+
